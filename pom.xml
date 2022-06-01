@@ -55,11 +55,11 @@
 					
 				<cloudHubDeployment>
 					<uri>https://anypoint.mulesoft.com</uri>
-					<muleVersion>4.3.0</muleVersion>
+					<muleVersion>4.4.0</muleVersion>
 					<username>harshit_197</username>
 					<password>Mulesoft@1234</password>
 					<applicationName>book_my_holiday</applicationName>
-					<environment>SANDBOX</environment>
+					<environment>Sandbox</environment>
 					<businessGroup>XYZ</businessGroup>
 					<worker>1</worker>
 					<objectStoreV2>true</objectStoreV2>
