@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:cabs-booking="http://www.mulesoft.org/schema/mule/cabs-booking"
+	xmlns:indigo-flights-api="http://www.mulesoft.org/schema/mule/indigo-flights-api" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/indigo-flights-api http://www.mulesoft.org/schema/mule/indigo-flights-api/current/mule-indigo-flights-api.xsd
+http://www.mulesoft.org/schema/mule/cabs-booking http://www.mulesoft.org/schema/mule/cabs-booking/current/mule-cabs-booking.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<flow name="getflight-origin-destination" doc:id="eac1933d-088e-4ef2-81a6-a3604cc05b70">
+		<indigo-flights-api:get-flights origin="#[attributes.queryParams.origin]" destination="#[attributes.queryParams.destination]" doc:name="Get flights" doc:id="0f462a86-2f36-4fbe-933a-4997fa444abc" config-ref="Indigo_flights_api_Config"/>
+	</flow>
+	<flow name="bookflight-origin-destination-departuredate" doc:id="8655e6f6-d143-4a81-969d-8db29724f7c1" >
+		<indigo-flights-api:get-bookflights origin="#[attributes.queryParams.origin]" destination="#[attributes.queryParams.destination]" doc:name="Get bookflights -origin-destination-departureDate" doc:id="d9b62d7a-9881-413e-a305-be4c68d17c65" config-ref="Indigo_flights_api_Config" departure-date="#[attributes.queryParams.departureDate]"/>
+	</flow>
+	<flow name="get-hotel-place" doc:id="d5268435-2b66-49ab-ab5a-476e23d7b06c" >
+		<ee:transform doc:name="Transform Message" doc:id="9a0233fc-768a-4256-8fa0-ed003e9f89b5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 https://www.example.com/schemas
+---
+{
+	ns0#GET_Hotels_GET_InputMessage: {
+		Place: attributes.queryParams.Place as String
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="8da1bf7a-31a2-452a-b3d6-6d03be21b931" config-ref="Web_Service_Consumer_Config" operation="GET_Hotels_GET">
+		</wsc:consume>
+		<logger level="INFO" doc:name="Logger" doc:id="4b9ba4b8-cf41-49a3-b50c-42737bd82523" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="e5f81954-6871-4ee3-b07c-04d48532b9c3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="book-hotels" doc:id="93b43849-4510-450c-ae88-fcbdee915edb" >
+		<ee:transform doc:name="Transform Message" doc:id="62f01c4b-9106-451d-8637-7190c347f9be" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 https://www.example.com/schemas
+---
+{
+	ns0#GET_Bookhotel_GET_InputMessage: {
+		Place: attributes.queryParams.Place as String,
+		rooms: attributes.queryParams.rooms as String,
+		date: attributes.queryParams.date as String
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="4c8f0534-c952-40b7-b0f9-d10d1be500f9" config-ref="Web_Service_Consumer_Config" operation="GET_Bookhotel_GET"/>
+		<ee:transform doc:name="Transform Message" doc:id="ef1b6a09-2078-466d-930d-7770a78222ce" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-cabs-with-origin-dstination" doc:id="b017ea98-9dea-4ced-b267-8f32ef7f2494" >
+		<cabs-booking:get-cabs doc:name="Get cabs" doc:id="574a24b8-2d14-43ec-8c81-09e09b6e1187" config-ref="Cabs_Booking_Config" origin="#[attributes.queryParams.origin]" destination="#[attributes.queryParams.destination]"/>
+	</flow>
+	<flow name="book-cab-origin-destination-date" doc:id="92ac297a-f7e6-4876-bdf1-91f1ddfba341" >
+		<cabs-booking:get-bookcabs doc:name="Get bookcabs" doc:id="65a22562-3145-42b0-85b1-138c94b86ac7" config-ref="Cabs_Booking_Config" origin="#[attributes.queryParams.origin]" destination="#[attributes.queryParams.destination]" date="#[attributes.queryParams.date]"/>
+	</flow>
+</mule>

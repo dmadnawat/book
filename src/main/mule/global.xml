@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:cabs-booking="http://www.mulesoft.org/schema/mule/cabs-booking"
+	xmlns:indigo-flights-api="http://www.mulesoft.org/schema/mule/indigo-flights-api"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/indigo-flights-api http://www.mulesoft.org/schema/mule/indigo-flights-api/current/mule-indigo-flights-api.xsd
+http://www.mulesoft.org/schema/mule/cabs-booking http://www.mulesoft.org/schema/mule/cabs-booking/current/mule-cabs-booking.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<indigo-flights-api:config name="Indigo_flights_api_Config" doc:name="Indigo-flights-api Config" doc:id="bbce241d-4c13-4dfe-b5b8-1d9a4b59b4ba" property_host="indigo-flight-hardev.us-e2.cloudhub.io" property_port="80" property_protocol="HTTP" property_basePath="/api"/>
+	<cabs-booking:config name="Cabs_Booking_Config" doc:name="Cabs Booking Config" doc:id="dc62414b-fb23-4981-94ce-72773a076140" property_host="cab-book-hardev.us-e2.cloudhub.io" property_port="80" property_protocol="HTTP" property_basePath="/api"/>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="ddec49a2-97dc-4633-8c29-2dede102e8ff" >
+		<wsc:connection wsdlLocation="http://taj-hotel-hardev.us-e2.cloudhub.io/hotel/default_Port?wsdl" service="hotel" port="default_Port" address="http://taj-hotel-hardev.us-e2.cloudhub.io/hotel/default_Port">
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
+</mule>

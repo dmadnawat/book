@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_eac1933d_088e_4ef2_81a6_a3604cc05b70_Input_Payload = Array<{|  ID: Number,   code: String,   price: Number,   departureDate: String,   origin: String,   destination: String,   emptySeats: Number,   totalSeats: Number|}>
+

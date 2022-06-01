@@ -1,0 +1,27 @@
+%dw 2.0
+
+type auto_8655e6f6_d143_4a81_969d_8db29724f7c1_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    origin: "BLR" | "NDLS" | "BPL", 
+    destination: "BLR" | "NDLS" | "BPL", 
+    departureDate: String
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+

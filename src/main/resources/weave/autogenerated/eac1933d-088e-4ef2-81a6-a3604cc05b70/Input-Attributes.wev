@@ -1,0 +1,26 @@
+%dw 2.0
+
+type auto_eac1933d_088e_4ef2_81a6_a3604cc05b70_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    origin: "BLR" | "NDLS" | "BPL", 
+    destination: "BLR" | "NDLS" | "BPL"
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
